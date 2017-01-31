@@ -77,7 +77,7 @@ void CreateSample::createSample(bool deviation,
 	double g_gg_per, double g_bb_per, double g_gc_per, double g_bc_per, double g_bg_per, double g_gb_per,
 	double b_bg_per, double b_gb_per, double b_bc_per, double b_gc_per, double b_gg_per, double b_bb_per)
 {
-	if (false && deviation) {
+	if (deviation) {
 		this->createSampleD(g_gg_per, g_bb_per, g_gc_per, g_bc_per, g_bg_per, g_gb_per, b_bg_per, b_gb_per, b_gg_per, b_bb_per, b_gc_per, b_bc_per);
 		return;
 	}
