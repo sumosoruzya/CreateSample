@@ -451,14 +451,14 @@ void CreateSample::createSampleD(
 		if (*num < this->good_product_num)
 		{
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 			{
-				good_good_good.push_back(make_pair(*c, *i));
+				good_good_good.push_back(make_pair(*c, this->good_product[*i]));
 			}
 		}
 		else
 		{
-			for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
+			for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, *i));
 			}
@@ -472,28 +472,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> good_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = ggg_reviews.begin(), e1 = this->good_customer.end(), e2 = ggg_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_good_bad_good(engine);
-	if (tmp <= 0.2 * *num)
-	{
-	if (tmp < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_good_bad_good(engine);
+		if (tmp <= 0.2 * *num)
+		{
+			if (tmp < this->bad_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_good.reserve(this->test_good.size() + good_bad_good.size());
 	copy(good_bad_good.begin(), good_bad_good.end(), back_inserter(this->test_good));
@@ -504,22 +504,22 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> good_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-	*num = dist_good_bad_bad(engine);
-	if (*num < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		*num = dist_good_bad_bad(engine);
+		if (*num < this->bad_product_num)
+		{
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
+			}
+		}
+		else
+		{
+			for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				good_good_good.push_back(make_pair(*c, *i));
+			}
+		}
 	}
 	this->test_good.reserve(this->test_good.size() + good_bad_bad.size());
 	copy(good_bad_bad.begin(), good_bad_bad.end(), back_inserter(this->test_good));
@@ -529,28 +529,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> good_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_good_good_bad(engine);
-	if (tmp <= 0.2 * *num)
-	{
-	if (tmp < this->good_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_good_good_bad(engine);
+		if (tmp <= 0.2 * *num)
+		{
+			if (tmp < this->good_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_good.reserve(this->test_good.size() + good_good_bad.size());
 	copy(good_good_bad.begin(), good_good_bad.end(), back_inserter(this->test_good));
@@ -561,22 +561,22 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> good_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-	*num = dist_good_bad_complainer(engine);
-	if (*num < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		*num = dist_good_bad_complainer(engine);
+		if (*num < this->bad_product_num)
+		{
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
+			}
+		}
+		else
+		{
+			for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				good_good_good.push_back(make_pair(*c, *i));
+			}
+		}
 	}
 	this->test_good.reserve(this->test_good.size() + good_bad_complainer.size());
 	copy(good_bad_complainer.begin(), good_bad_complainer.end(), back_inserter(this->test_good));
@@ -586,28 +586,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> good_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_good_good_complainer(engine);
-	if (0.6 * tmp <= 0.4 * *num)
-	{
-	if (tmp < this->good_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_good_good_complainer(engine);
+		if (0.6 * tmp <= 0.4 * *num)
+		{
+			if (tmp < this->good_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					good_good_good.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_good.reserve(this->test_good.size() + good_good_complainer.size());
 	copy(good_good_complainer.begin(), good_good_complainer.end(), back_inserter(this->test_good));
@@ -620,22 +620,22 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-	*num = dist_bad_bad_good(engine);
-	if (*num < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		*num = dist_bad_bad_good(engine);
+		if (*num < this->bad_product_num)
+		{
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				bad_bad_good.push_back(make_pair(*c, this->bad_product[*i]));
+			}
+		}
+		else
+		{
+			for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+			{
+				bad_bad_good.push_back(make_pair(*c, *i));
+			}
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_bad_good.size());
 	copy(bad_bad_good.begin(), bad_bad_good.end(), back_inserter(this->test_bad));
@@ -645,28 +645,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_good_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_bad_good_good(engine);
-	if (tmp <= 0.2 * *num)
-	{
-	if (tmp < this->good_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_bad_good_good(engine);
+		if (tmp <= 0.2 * *num)
+		{
+			if (tmp < this->good_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					bad_good_good.push_back(make_pair(*c, this->good_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
+				{
+					bad_good_good.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_good_good.size());
 	copy(bad_good_good.begin(), bad_good_good.end(), back_inserter(this->test_bad));
@@ -677,22 +677,22 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-	*num = dist_bad_good_bad(engine);
-	if (*num < this->good_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		*num = dist_bad_good_bad(engine);
+		if (*num < this->good_product_num)
+		{
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
+			{
+				bad_good_bad.push_back(make_pair(*c, this->good_product[*i]));
+			}
+		}
+		else
+		{
+			for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
+			{
+				bad_good_bad.push_back(make_pair(*c, *i));
+			}
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_good_bad.size());
 	copy(bad_good_bad.begin(), bad_good_bad.end(), back_inserter(this->test_bad));
@@ -702,28 +702,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_bad_bad_bad(engine);
-	if (tmp <= 0.2 * *num)
-	{
-	if (tmp < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_bad_bad_bad(engine);
+		if (tmp <= 0.2 * *num)
+		{
+			if (tmp < this->bad_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					bad_bad_bad.push_back(make_pair(*c, this->bad_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					bad_bad_bad.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_bad_bad.size());
 	copy(bad_bad_bad.begin(), bad_bad_bad.end(), back_inserter(this->test_bad));
@@ -734,22 +734,22 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-	*num = dist_bad_good_complainer(engine);
-	if (*num < this->good_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		*num = dist_bad_good_complainer(engine);
+		if (*num < this->good_product_num)
+		{
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
+			{
+				bad_good_complainer.push_back(make_pair(*c, this->good_product[*i]));
+			}
+		}
+		else
+		{
+			for (vector<int>::iterator i = this->good_product.begin(), e = this->good_product.end(); i != e, *c < this->good_product[*i]; ++i)
+			{
+				bad_good_complainer.push_back(make_pair(*c, *i));
+			}
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_good_complainer.size());
 	copy(bad_good_complainer.begin(), bad_good_complainer.end(), back_inserter(this->test_bad));
@@ -759,28 +759,28 @@ void CreateSample::createSampleD(
 	vector<pair<int, int>> bad_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2;)
 	{
-	int tmp = dist_bad_bad_complainer(engine);
-	if (0.6 * tmp <= 0.4 * *num)
-	{
-	if (tmp < this->bad_product_num)
-	{
-	shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
-	for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
-	else
-	{
-	for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e; ++i)
-	{
-	good_good_good.push_back(make_pair(*c, *i));
-	}
-	}
+		int tmp = dist_bad_bad_complainer(engine);
+		if (0.6 * tmp <= 0.4 * *num)
+		{
+			if (tmp < this->bad_product_num)
+			{
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					bad_bad_complainer.push_back(make_pair(*c, this->bad_product[*i]));
+				}
+			}
+			else
+			{
+				for (vector<int>::iterator i = this->bad_product.begin(), e = this->bad_product.end(); i != e, *c < this->bad_product[*i]; ++i)
+				{
+					bad_bad_complainer.push_back(make_pair(*c, *i));
+				}
+			}
 
-	++c;
-	++num;
-	}
+			++c;
+			++num;
+		}
 	}
 	this->test_bad.reserve(this->test_bad.size() + bad_bad_complainer.size());
 	copy(bad_bad_complainer.begin(), bad_bad_complainer.end(), back_inserter(this->test_bad));
