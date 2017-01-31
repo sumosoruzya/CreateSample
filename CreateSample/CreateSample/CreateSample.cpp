@@ -1,7 +1,9 @@
 // CreateSample.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
 //
 
+#include "stdafx.h"
 #include "CreateSample.hpp"
+#include "Shuffle.hpp"
 
 void CreateSample::classifyProduct(double gp_per_p, double bp_per_p)
 {
@@ -77,6 +79,7 @@ void CreateSample::createSample(bool deviation,
 
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
+	vector<int>& shuffle_data = make_nonrepeat_rand_array_select_with_hash(0, 0, this->good_product_num);
 
 	cout << "good_review" << endl;
 	cout << "good_good" << endl;
@@ -91,8 +94,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_good));
 		}
 		else
 		{
@@ -119,8 +122,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_good));
 		}
 		else
 		{
@@ -142,8 +145,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_bad));
 		}
 		else
 		{
@@ -170,8 +173,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_bad));
 		}
 		else
 		{
@@ -193,8 +196,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_complainer));
 		}
 		else
 		{
@@ -221,8 +224,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_complainer));
 		}
 		else
 		{
@@ -246,8 +249,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_good));
 		}
 		else
 		{
@@ -274,8 +277,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_good));
 		}
 		else
 		{
@@ -297,8 +300,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_bad));
 		}
 		else
 		{
@@ -325,8 +328,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_bad));
 		}
 		else
 		{
@@ -348,8 +351,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_complainer));
 		}
 		else
 		{
@@ -376,8 +379,8 @@ void CreateSample::createSample(bool deviation,
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_complainer));
 		}
 		else
 		{
@@ -394,6 +397,7 @@ void CreateSample::createSampleD(
 {
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
+	vector<int>& shuffle_data = make_nonrepeat_rand_array_select_with_hash(0, 0, this->good_product_num);
 
 	cout << "good_review" << endl;
 	cout << "good_good" << endl;
@@ -408,8 +412,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_good));
 		}
 		else
 		{
@@ -436,8 +440,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_good));
 		}
 		else
 		{
@@ -459,8 +463,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_bad));
 		}
 		else
 		{
@@ -487,8 +491,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_bad));
 		}
 		else
 		{
@@ -510,8 +514,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(good_bad_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_bad_complainer));
 		}
 		else
 		{
@@ -538,8 +542,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(good_good_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(good_good_complainer));
 		}
 		else
 		{
@@ -563,8 +567,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_good));
 		}
 		else
 		{
@@ -591,8 +595,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_good));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_good));
 		}
 		else
 		{
@@ -614,8 +618,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_bad));
 		}
 		else
 		{
@@ -642,8 +646,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_bad));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_bad));
 		}
 		else
 		{
@@ -665,8 +669,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->good_product_num)
 		{
-			shuffle(this->good_product.begin(), this->good_product.end(), mt19937());
-			copy(this->good_product.begin(), this->good_product.begin() + *num, back_inserter(bad_good_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_good_complainer));
 		}
 		else
 		{
@@ -693,8 +697,8 @@ void CreateSample::createSampleD(
 	{
 		if (*num < this->bad_product_num)
 		{
-			shuffle(this->bad_product.begin(), this->bad_product.end(), mt19937());
-			copy(this->bad_product.begin(), this->bad_product.begin() + *num, back_inserter(bad_bad_complainer));
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			copy(shuffle_data.begin(), shuffle_data.end(), back_inserter(bad_bad_complainer));
 		}
 		else
 		{

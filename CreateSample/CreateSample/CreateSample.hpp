@@ -1,6 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
@@ -8,7 +7,6 @@
 #include <numeric>
 #include <random>
 #include <vector>
-#include <unordered_map>
 
 using namespace std;
 
