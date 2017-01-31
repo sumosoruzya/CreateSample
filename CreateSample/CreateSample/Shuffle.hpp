@@ -12,7 +12,7 @@ mt19937 create_rand_engine() {
 	vector<std::uint_least32_t> v(10);// 初期化用ベクタ
 	generate(v.begin(), v.end(), ref(rnd));// ベクタの初期化
 	seed_seq seed(v.begin(), v.end());
-	return std::mt19937(seed);// 乱数エンジン
+	return mt19937(seed);// 乱数エンジン
 }
 
 namespace detail {
