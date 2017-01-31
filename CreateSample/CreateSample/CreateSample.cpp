@@ -99,7 +99,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				good_good_good.push_back(make_pair(*c, *i));
+				good_good_good.push_back(make_pair(*c, this->good_product[*i]));
 			}
 		}
 		else
@@ -126,7 +126,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					good_good_good.push_back(make_pair(*c, *i));
+					good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
 				}
 			}
 			else
@@ -156,7 +156,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				good_good_good.push_back(make_pair(*c, *i));
+				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
 			}
 		}
 		else
@@ -183,7 +183,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					good_good_good.push_back(make_pair(*c, *i));
+					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
 				}
 			}
 			else
@@ -213,7 +213,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				good_good_good.push_back(make_pair(*c, *i));
+				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
 			}
 		}
 		else
@@ -240,7 +240,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					good_good_good.push_back(make_pair(*c, *i));
+					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
 				}
 			}
 			else
@@ -272,7 +272,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				bad_bad_good.push_back(make_pair(*c, *i));
+				bad_bad_good.push_back(make_pair(*c, this->bad_product[*i]));
 			}
 		}
 		else
@@ -299,7 +299,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					bad_good_good.push_back(make_pair(*c, *i));
+					bad_good_good.push_back(make_pair(*c, this->good_product[*i]));
 				}
 			}
 			else
@@ -329,7 +329,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				bad_good_bad.push_back(make_pair(*c, *i));
+				bad_good_bad.push_back(make_pair(*c, this->good_product[*i]));
 			}
 		}
 		else
@@ -356,7 +356,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					bad_bad_bad.push_back(make_pair(*c, *i));
+					bad_bad_bad.push_back(make_pair(*c, this->bad_product[*i]));
 				}
 			}
 			else
@@ -386,7 +386,7 @@ void CreateSample::createSample(bool deviation,
 			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
-				bad_good_complainer.push_back(make_pair(*c, *i));
+				bad_good_complainer.push_back(make_pair(*c, this->good_product[*i]));
 			}
 		}
 		else
@@ -413,7 +413,7 @@ void CreateSample::createSample(bool deviation,
 				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
-					bad_bad_complainer.push_back(make_pair(*c, *i));
+					bad_bad_complainer.push_back(make_pair(*c, this->bad_product[*i]));
 				}
 			}
 			else
