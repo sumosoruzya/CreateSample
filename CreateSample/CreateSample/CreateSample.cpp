@@ -74,8 +74,8 @@ void CreateSample::classifyCustomer(double gc_per_c, double bc_per_c, double c_p
 }
 
 void CreateSample::createSample(bool deviation,
-	double g_gg_per, double g_bb_per, double g_gc_per, double g_bc_per, double g_bg_per, double g_gb_per,
-	double b_bg_per, double b_gb_per, double b_bc_per, double b_gc_per, double b_gg_per, double b_bb_per)
+	double g_gg_per, double g_bg_per, double g_bb_per, double g_gb_per, double g_bc_per, double g_gc_per,
+	double b_bg_per, double b_gg_per, double b_gb_per, double b_bb_per, double b_gc_per, double b_bc_per)
 {
 	if (deviation) {
 		this->createSampleD(g_gg_per, g_bb_per, g_gc_per, g_bc_per, g_bg_per, g_gb_per, b_bg_per, b_gb_per, b_gg_per, b_bb_per, b_gc_per, b_bc_per);
@@ -88,15 +88,15 @@ void CreateSample::createSample(bool deviation,
 
 	cout << "good_review" << endl;
 	cout << "good_good" << endl;
-	poisson_distribution<int> dist_good_good_good(g_gg_per);
+	exponential_distribution<double> dist_good_good_good(g_gg_per);
 	vector<int> ggg_reviews(this->good_customer_num);
 	vector<pair<int, int>> good_good_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = ggg_reviews.begin(), e1 = this->good_customer.end(), e2 = ggg_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_good_good(engine);
+		*num = static_cast<int>(dist_good_good_good(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -114,16 +114,16 @@ void CreateSample::createSample(bool deviation,
 	copy(good_good_good.begin(), good_good_good.end(), back_inserter(this->test_good));
 
 	cout << "bad_good" << endl;
-	poisson_distribution<int> dist_good_bad_good(g_bg_per);
+	exponential_distribution<double> dist_good_bad_good(g_bg_per);
 	vector<pair<int, int>> good_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = ggg_reviews.begin(), e1 = this->good_customer.end(), e2 = ggg_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_bad_good(engine);
+		int tmp = static_cast<int>(dist_good_bad_good(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -145,15 +145,15 @@ void CreateSample::createSample(bool deviation,
 	copy(good_bad_good.begin(), good_bad_good.end(), back_inserter(this->test_good));
 
 	cout << "bad_bad" << endl;
-	poisson_distribution<int> dist_good_bad_bad(g_bb_per);
+	exponential_distribution<double> dist_good_bad_bad(g_bb_per);
 	vector<int> gbb_reviews(this->bad_customer_num);
 	vector<pair<int, int>> good_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_bad_bad(engine);
+		*num = static_cast<int>(dist_good_bad_bad(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -171,16 +171,16 @@ void CreateSample::createSample(bool deviation,
 	copy(good_bad_bad.begin(), good_bad_bad.end(), back_inserter(this->test_good));
 
 	cout << "good_bad" << endl;
-	poisson_distribution<int> dist_good_good_bad(g_gb_per);
+	exponential_distribution<double> dist_good_good_bad(g_gb_per);
 	vector<pair<int, int>> good_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_good_bad(engine);
+		int tmp = static_cast<int>(dist_good_good_bad(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -202,15 +202,15 @@ void CreateSample::createSample(bool deviation,
 	copy(good_good_bad.begin(), good_good_bad.end(), back_inserter(this->test_good));
 
 	cout << "bad_complainer" << endl;
-	poisson_distribution<int> dist_good_bad_complainer(g_bc_per);
+	exponential_distribution<double> dist_good_bad_complainer(g_bc_per);
 	vector<int> gbc_reviews(this->complainer_num);
 	vector<pair<int, int>> good_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_bad_complainer(engine);
+		*num = static_cast<int>(dist_good_bad_complainer(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -228,16 +228,16 @@ void CreateSample::createSample(bool deviation,
 	copy(good_bad_complainer.begin(), good_bad_complainer.end(), back_inserter(this->test_good));
 
 	cout << "good_complainer" << endl;
-	poisson_distribution<int> dist_good_good_complainer(g_gc_per);
+	exponential_distribution<double> dist_good_good_complainer(g_gc_per);
 	vector<pair<int, int>> good_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_good_complainer(engine);
+		int tmp = static_cast<int>(dist_good_good_complainer(engine));
 		if (0.6 * tmp <= 0.4 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -261,15 +261,15 @@ void CreateSample::createSample(bool deviation,
 
 	cout << "bad_review" << endl;
 	cout << "bad_good" << endl;
-	poisson_distribution<int> dist_bad_bad_good(b_bg_per);
+	exponential_distribution<double> dist_bad_bad_good(b_bg_per);
 	vector<int> bbg_reviews(this->good_customer_num);
 	vector<pair<int, int>> bad_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_bad_good(engine);
+		*num = static_cast<int>(dist_bad_bad_good(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				bad_bad_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -287,16 +287,16 @@ void CreateSample::createSample(bool deviation,
 	copy(bad_bad_good.begin(), bad_bad_good.end(), back_inserter(this->test_bad));
 
 	cout << "good_good" << endl;
-	poisson_distribution<int> dist_bad_good_good(b_gg_per);
+	exponential_distribution<double> dist_bad_good_good(b_gg_per);
 	vector<pair<int, int>> bad_good_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_good_good(engine);
+		int tmp = static_cast<int>(dist_bad_good_good(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					bad_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -318,15 +318,15 @@ void CreateSample::createSample(bool deviation,
 	copy(bad_good_good.begin(), bad_good_good.end(), back_inserter(this->test_bad));
 
 	cout << "good_bad" << endl;
-	poisson_distribution<int> dist_bad_good_bad(b_gb_per);
+	exponential_distribution<double> dist_bad_good_bad(b_gb_per);
 	vector<int> bgb_reviews(this->bad_customer_num);
 	vector<pair<int, int>> bad_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_good_bad(engine);
+		*num = static_cast<int>(dist_bad_good_bad(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				bad_good_bad.push_back(make_pair(*c, this->good_product[*i]));
@@ -344,16 +344,16 @@ void CreateSample::createSample(bool deviation,
 	copy(bad_good_bad.begin(), bad_good_bad.end(), back_inserter(this->test_bad));
 
 	cout << "bad_bad" << endl;
-	poisson_distribution<int> dist_bad_bad_bad(b_bb_per);
+	exponential_distribution<double> dist_bad_bad_bad(b_bb_per);
 	vector<pair<int, int>> bad_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_bad_bad(engine);
+		int tmp = static_cast<int>(dist_bad_bad_bad(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					bad_bad_bad.push_back(make_pair(*c, this->bad_product[*i]));
@@ -375,15 +375,15 @@ void CreateSample::createSample(bool deviation,
 	copy(bad_bad_bad.begin(), bad_bad_bad.end(), back_inserter(this->test_bad));
 
 	cout << "good_complainer" << endl;
-	poisson_distribution<int> dist_bad_good_complainer(b_gc_per);
+	exponential_distribution<double> dist_bad_good_complainer(b_gc_per);
 	vector<int> bgc_reviews(this->complainer_num);
 	vector<pair<int, int>> bad_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_good_complainer(engine);
+		*num = static_cast<int>(dist_bad_good_complainer(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 			{
 				bad_good_complainer.push_back(make_pair(*c, this->good_product[*i]));
@@ -401,16 +401,16 @@ void CreateSample::createSample(bool deviation,
 	copy(bad_good_complainer.begin(), bad_good_complainer.end(), back_inserter(this->test_bad));
 
 	cout << "bad_complainer" << endl;
-	poisson_distribution<int> dist_bad_bad_complainer(b_bc_per);
+	exponential_distribution<double> dist_bad_bad_complainer(b_bc_per);
 	vector<pair<int, int>> bad_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_bad_complainer(engine);
+		int tmp = static_cast<int>(dist_bad_bad_complainer(engine));
 		if (0.6 * tmp <= 0.4 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e; ++i)
 				{
 					bad_bad_complainer.push_back(make_pair(*c, this->bad_product[*i]));
@@ -433,8 +433,8 @@ void CreateSample::createSample(bool deviation,
 }
 
 void CreateSample::createSampleD(
-	double g_gg_per, double g_bb_per, double g_gc_per, double g_bc_per, double g_bg_per, double g_gb_per,
-	double b_bg_per, double b_gb_per, double b_gg_per, double b_bb_per, double b_gc_per, double b_bc_per)
+	double g_gg_per, double g_bg_per, double g_bb_per, double g_gb_per, double g_bc_per, double g_gc_per,
+	double b_bg_per, double b_gg_per, double b_gb_per, double b_bb_per, double b_gc_per, double b_bc_per)
 {
 	random_device seed_gen;
 	default_random_engine engine(seed_gen());
@@ -442,15 +442,15 @@ void CreateSample::createSampleD(
 
 	cout << "good_review" << endl;
 	cout << "good_good" << endl;
-	poisson_distribution<int> dist_good_good_good(g_gg_per);
+	exponential_distribution<double> dist_good_good_good(g_gg_per);
 	vector<int> ggg_reviews(this->good_customer_num);
 	vector<pair<int, int>> good_good_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = ggg_reviews.begin(), e1 = this->good_customer.end(), e2 = ggg_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_good_good(engine);
+		*num = static_cast<int>(dist_good_good_good(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -468,16 +468,16 @@ void CreateSample::createSampleD(
 	copy(good_good_good.begin(), good_good_good.end(), back_inserter(this->test_good));
 
 	cout << "bad_good" << endl;
-	poisson_distribution<int> dist_good_bad_good(g_bg_per);
+	exponential_distribution<double> dist_good_bad_good(g_bg_per);
 	vector<pair<int, int>> good_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = ggg_reviews.begin(), e1 = this->good_customer.end(), e2 = ggg_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_bad_good(engine);
+		int tmp = static_cast<int>(dist_good_bad_good(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -499,15 +499,15 @@ void CreateSample::createSampleD(
 	copy(good_bad_good.begin(), good_bad_good.end(), back_inserter(this->test_good));
 
 	cout << "bad_bad" << endl;
-	poisson_distribution<int> dist_good_bad_bad(g_bb_per);
+	exponential_distribution<double> dist_good_bad_bad(g_bb_per);
 	vector<int> gbb_reviews(this->bad_customer_num);
 	vector<pair<int, int>> good_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_bad_bad(engine);
+		*num = static_cast<int>(dist_good_bad_bad(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -525,16 +525,16 @@ void CreateSample::createSampleD(
 	copy(good_bad_bad.begin(), good_bad_bad.end(), back_inserter(this->test_good));
 
 	cout << "good_bad" << endl;
-	poisson_distribution<int> dist_good_good_bad(g_gb_per);
+	exponential_distribution<double> dist_good_good_bad(g_gb_per);
 	vector<pair<int, int>> good_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = gbb_reviews.begin(), e1 = this->bad_customer.end(), e2 = gbb_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_good_bad(engine);
+		int tmp = static_cast<int>(dist_good_good_bad(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -556,15 +556,15 @@ void CreateSample::createSampleD(
 	copy(good_good_bad.begin(), good_good_bad.end(), back_inserter(this->test_good));
 
 	cout << "bad_complainer" << endl;
-	poisson_distribution<int> dist_good_bad_complainer(g_bc_per);
+	exponential_distribution<double> dist_good_bad_complainer(g_bc_per);
 	vector<int> gbc_reviews(this->complainer_num);
 	vector<pair<int, int>> good_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_good_bad_complainer(engine);
+		*num = static_cast<int>(dist_good_bad_complainer(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 			{
 				good_good_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -582,16 +582,16 @@ void CreateSample::createSampleD(
 	copy(good_bad_complainer.begin(), good_bad_complainer.end(), back_inserter(this->test_good));
 
 	cout << "good_complainer" << endl;
-	poisson_distribution<int> dist_good_good_complainer(g_gc_per);
+	exponential_distribution<double> dist_good_good_complainer(g_gc_per);
 	vector<pair<int, int>> good_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = gbc_reviews.begin(), e1 = this->complainer.end(), e2 = gbc_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_good_good_complainer(engine);
+		int tmp = static_cast<int>(dist_good_good_complainer(engine));
 		if (0.6 * tmp <= 0.4 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 				{
 					good_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -615,15 +615,15 @@ void CreateSample::createSampleD(
 
 	cout << "bad_review" << endl;
 	cout << "bad_good" << endl;
-	poisson_distribution<int> dist_bad_bad_good(b_bg_per);
+	exponential_distribution<double> dist_bad_bad_good(b_bg_per);
 	vector<int> bbg_reviews(this->good_customer_num);
 	vector<pair<int, int>> bad_bad_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_bad_good(engine);
+		*num = static_cast<int>(dist_bad_bad_good(engine));
 		if (*num < this->bad_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 			{
 				bad_bad_good.push_back(make_pair(*c, this->bad_product[*i]));
@@ -641,16 +641,16 @@ void CreateSample::createSampleD(
 	copy(bad_bad_good.begin(), bad_bad_good.end(), back_inserter(this->test_bad));
 
 	cout << "good_good" << endl;
-	poisson_distribution<int> dist_bad_good_good(b_gg_per);
+	exponential_distribution<double> dist_bad_good_good(b_gg_per);
 	vector<pair<int, int>> bad_good_good;
 	for (vector<int>::iterator c = this->good_customer.begin(), num = bbg_reviews.begin(), e1 = this->good_customer.end(), e2 = bbg_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_good_good(engine);
+		int tmp = static_cast<int>(dist_bad_good_good(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->good_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 				{
 					bad_good_good.push_back(make_pair(*c, this->good_product[*i]));
@@ -672,15 +672,15 @@ void CreateSample::createSampleD(
 	copy(bad_good_good.begin(), bad_good_good.end(), back_inserter(this->test_bad));
 
 	cout << "good_bad" << endl;
-	poisson_distribution<int> dist_bad_good_bad(b_gb_per);
+	exponential_distribution<double> dist_bad_good_bad(b_gb_per);
 	vector<int> bgb_reviews(this->bad_customer_num);
 	vector<pair<int, int>> bad_good_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_good_bad(engine);
+		*num = static_cast<int>(dist_bad_good_bad(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 			{
 				bad_good_bad.push_back(make_pair(*c, this->good_product[*i]));
@@ -698,16 +698,16 @@ void CreateSample::createSampleD(
 	copy(bad_good_bad.begin(), bad_good_bad.end(), back_inserter(this->test_bad));
 
 	cout << "bad_bad" << endl;
-	poisson_distribution<int> dist_bad_bad_bad(b_bb_per);
+	exponential_distribution<double> dist_bad_bad_bad(b_bb_per);
 	vector<pair<int, int>> bad_bad_bad;
 	for (vector<int>::iterator c = this->bad_customer.begin(), num = bgb_reviews.begin(), e1 = this->bad_customer.end(), e2 = bgb_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_bad_bad(engine);
+		int tmp = static_cast<int>(dist_bad_bad_bad(engine));
 		if (tmp <= 0.2 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 				{
 					bad_bad_bad.push_back(make_pair(*c, this->bad_product[*i]));
@@ -729,15 +729,15 @@ void CreateSample::createSampleD(
 	copy(bad_bad_bad.begin(), bad_bad_bad.end(), back_inserter(this->test_bad));
 
 	cout << "good_complainer" << endl;
-	poisson_distribution<int> dist_bad_good_complainer(b_gc_per);
+	exponential_distribution<double> dist_bad_good_complainer(b_gc_per);
 	vector<int> bgc_reviews(this->complainer_num);
 	vector<pair<int, int>> bad_good_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2; ++c, ++num)
 	{
-		*num = dist_bad_good_complainer(engine);
+		*num = static_cast<int>(dist_bad_good_complainer(engine));
 		if (*num < this->good_product_num)
 		{
-			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num);
+			shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->good_product_num - 1);
 			for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->good_product[*i]; ++i)
 			{
 				bad_good_complainer.push_back(make_pair(*c, this->good_product[*i]));
@@ -755,16 +755,16 @@ void CreateSample::createSampleD(
 	copy(bad_good_complainer.begin(), bad_good_complainer.end(), back_inserter(this->test_bad));
 
 	cout << "bad_complainer" << endl;
-	poisson_distribution<int> dist_bad_bad_complainer(b_bc_per);
+	exponential_distribution<double> dist_bad_bad_complainer(b_bc_per);
 	vector<pair<int, int>> bad_bad_complainer;
 	for (vector<int>::iterator c = this->complainer.begin(), num = bgc_reviews.begin(), e1 = this->complainer.end(), e2 = bgc_reviews.end(); c != e1 || num != e2;)
 	{
-		int tmp = dist_bad_bad_complainer(engine);
+		int tmp = static_cast<int>(dist_bad_bad_complainer(engine));
 		if (0.6 * tmp <= 0.4 * *num)
 		{
 			if (tmp < this->bad_product_num)
 			{
-				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num);
+				shuffle_data = make_nonrepeat_rand_array_select_with_hash(*num, 0, this->bad_product_num - 1);
 				for (vector<int>::iterator i = shuffle_data.begin(), e = shuffle_data.end(); i != e, *c < this->bad_product[*i]; ++i)
 				{
 					bad_bad_complainer.push_back(make_pair(*c, this->bad_product[*i]));
@@ -786,15 +786,21 @@ void CreateSample::createSampleD(
 	copy(bad_bad_complainer.begin(), bad_bad_complainer.end(), back_inserter(this->test_bad));
 }
 
-void CreateSample::dumpSample()
+void CreateSample::dumpSample(string name)
 {
-	ofstream product_data("product_data.txt", ios::out);
+	if (_mkdir(name.c_str()) != 0)
+	{
+		cerr << "出力フォルダの作成に失敗しました" << endl;
+		return;
+	}
+
+	ofstream product_data(name + "/product_data.txt", ios::out);
 	copy(this->good_product.begin(), this->good_product.end(), ostream_iterator<int>(product_data, ","));
 	product_data << endl;
 	copy(this->bad_product.begin(), this->bad_product.end(), ostream_iterator<int>(product_data, ","));
 	product_data << endl;
 
-	ofstream customer_data("customer_data.txt", ios::out);
+	ofstream customer_data(name + "/customer_data.txt", ios::out);
 	copy(this->good_customer.begin(), this->good_customer.end(), ostream_iterator<int>(customer_data, ","));
 	customer_data << endl;
 	copy(this->bad_customer.begin(), this->bad_customer.end(), ostream_iterator<int>(customer_data, ","));
@@ -802,21 +808,21 @@ void CreateSample::dumpSample()
 	copy(this->complainer.begin(), this->complainer.end(), ostream_iterator<int>(customer_data, ","));
 	customer_data << endl;
 	
-	ofstream test_good("test_good.txt", ios::out);
+	ofstream test_good(name + "/test_good.txt", ios::out);
 	for (vector<pair<int, int>>::iterator i = this->test_good.begin(), e = this->test_good.end(); i != e; ++i)
 	{
 		test_good << (*i).first << " " << (*i).second << endl;
 	}
 	test_good << endl;
 	
-	ofstream test_bad("test_bad.txt", ios::out);
+	ofstream test_bad(name + "/test_bad.txt", ios::out);
 	for (vector<pair<int, int>>::iterator i = this->test_bad.begin(), e = this->test_bad.end(); i != e; ++i)
 	{
 		test_bad << (*i).first << " " << (*i).second << endl;
 	}
 	test_bad << endl;
 
-	ofstream train("train.txt", ios::out);
+	ofstream train(name + "/train.txt", ios::out);
 	copy(this->bad_product.begin(), this->bad_product.end(), ostream_iterator<int>(train, ","));
 	train << endl;
 	copy(this->bad_customer.begin(), this->bad_customer.end(), ostream_iterator<int>(train, ","));
