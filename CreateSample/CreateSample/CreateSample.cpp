@@ -791,7 +791,6 @@ void CreateSample::dumpSample(string name)
 	if (_mkdir(name.c_str()) != 0)
 	{
 		cerr << "出力フォルダの作成に失敗しました" << endl;
-		return;
 	}
 
 	ofstream product_data(name + "/product_data.txt", ios::out);
